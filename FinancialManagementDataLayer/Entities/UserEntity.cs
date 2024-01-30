@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FinancialManagementDataLayer.Entities
+{
+    public class UserEntity
+    {
+        public int Id { get; set; }
+        public required string Name { get; set; }
+        public string Email { get; set; }
+        public required string Password { get; set; }
+        public bool IsVerified { get; set; }
+        public ICollection<BeneficiaryEntity> beneficiaries { get; set; }
+        public ICollection<TopUpTransactionEntity> topUpTransactions { get; set; }
+
+
+    }
+}
