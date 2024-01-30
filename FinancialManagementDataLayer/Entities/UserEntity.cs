@@ -9,7 +9,6 @@
         public bool IsVerified { get; set; }
         public ICollection<BeneficiaryEntity> Beneficiaries { get; set; }
         public ICollection<TopUpTransactionEntity> TopUpTransactions { get; set; }
-
-
+        public decimal SessionBalance { get; set; }
     }
 }

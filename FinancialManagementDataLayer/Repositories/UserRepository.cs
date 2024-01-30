@@ -28,7 +28,7 @@ namespace FinancialManagementDataLayer.Repositories
 
         public Task<UserEntity> UpdateUser(UserEntity user, CancellationToken cancel)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_context.Users.Update(user).Entity);
         }
     }
 }
