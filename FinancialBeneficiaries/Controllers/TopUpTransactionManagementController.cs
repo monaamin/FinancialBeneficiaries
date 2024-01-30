@@ -24,7 +24,7 @@ namespace FinancialBeneficiaries.Controllers
         }
 
         [HttpGet(Name = "GetTopUpOptions")]
-        public ActionResult<List<TopUpOptions>> Get()
+        public ActionResult<List<TopUpOptions>> GetTopUpOptions()
         {
             return _topUpOptionsManagementService.GetTopUpOptionsList().Result;
         }
