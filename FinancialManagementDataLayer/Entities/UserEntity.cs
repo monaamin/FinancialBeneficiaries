@@ -13,8 +13,8 @@ namespace FinancialManagementDataLayer.Entities
         public string Email { get; set; }
         public required string Password { get; set; }
         public bool IsVerified { get; set; }
-        public ICollection<BeneficiaryEntity> beneficiaries { get; set; }
-        public ICollection<TopUpTransactionEntity> topUpTransactions { get; set; }
+        public ICollection<BeneficiaryEntity> Beneficiaries { get; set; }
+        public ICollection<TopUpTransactionEntity> TopUpTransactions { get; set; }
 
 
     }

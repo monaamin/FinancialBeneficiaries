@@ -14,7 +14,7 @@ namespace FinancialManagementDataLayer
         public DbSet<TopUpLimitTypeEntity> TopUpLimitTypes { get; set; }
         public DbSet<TopUpOptionsEntity> TopUpOptions { get; set; }
         public DbSet<UserEntity> Users { get; set; }
-        public DbSet<TopUpTransactionEntity> topUpTransactions { get; set; }
+        public DbSet<TopUpTransactionEntity> TopUpTransactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,14 +22,13 @@ namespace FinancialManagementDataLayer
             {
                 build.HasKey(entry => entry.BeneficiaryId);
                 build.Property(entry => entry.BeneficiaryId).ValueGeneratedOnAdd();
-                build.HasOne<UserEntity>(s => s.User).WithMany(g => g.beneficiaries).HasForeignKey(s => s.UserId);
             });
             modelBuilder.Entity<TopUpTransactionEntity>(build =>
             {
                 build.HasKey(entry => entry.Id);
                 build.Property(entry => entry.Id).ValueGeneratedOnAdd();
-                build.HasOne<UserEntity>(s => s.user).WithMany(g => g.topUpTransactions).HasForeignKey(s => s.UserId);
-                build.HasOne<BeneficiaryEntity>(s => s.beneficiary).WithMany(g => g.TopUpTransactions).HasForeignKey(s => s.BeneficiaryId);
+                build.HasOne<UserEntity>(s => s.user).WithMany(g => g.TopUpTransactions).HasForeignKey(s => s.UserId);
+                build.HasOne<BeneficiaryEntity>(s => s.beneficiary).WithMany(g=>g.TopUpTransactions).HasForeignKey(s=>s.BeneficiaryId);
 
             });
 

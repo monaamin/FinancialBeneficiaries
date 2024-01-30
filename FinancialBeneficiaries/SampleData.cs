@@ -1,6 +1,5 @@
 ﻿using FinancialManagementDataLayer.Entities;
 
-
 namespace FinancialManagementDataLayer
 {
     public class SampleData
@@ -14,6 +13,8 @@ namespace FinancialManagementDataLayer
             {
                 return;
             }
+            var users = GetUsers().ToArray();
+            context.Users.AddRange(users);
             var beneficiaries = GetBeneficiaries().ToArray();
             context.Beneficiaries.AddRange(beneficiaries);
             context.SaveChanges();
@@ -27,6 +28,20 @@ namespace FinancialManagementDataLayer
             context.TopUpLimits.AddRange(topUpLimits);
             context.SaveChanges();
             var test = context.TopUpLimits.ToList();
+        }
+
+        private static List<UserEntity> GetUsers()
+        {
+            return new List<UserEntity>
+            {
+                new UserEntity
+                {
+                    Id = 1,
+                    Name = "John",
+                    Password = "123456",
+                    Email = ""
+                }
+            };
         }
 
         private static List<TopUpLimitsEntity> GetTopUpLimits()
@@ -83,49 +98,49 @@ namespace FinancialManagementDataLayer
                 new TopUpOptionsEntity
                 {
                     Id = 1,
-                    Name = "5 AED",
+                    Name = "AED 5",
                     Amount = 5,
                     TopUpFee = 1,
                 },
                 new TopUpOptionsEntity
                 {
                     Id = 2,
-                    Name = "10 AED",
+                    Name = "AED 10",
                     Amount = 10,
                     TopUpFee = 1,
                 },
                  new TopUpOptionsEntity
                 {
                     Id = 3,
-                    Name = "20 AED",
+                    Name = "AED 20",
                     Amount = 20,
                     TopUpFee = 1,
                 },
                   new TopUpOptionsEntity
                 {
                     Id = 4,
-                    Name = "30 AED",
+                    Name = "AED 30",
                     TopUpFee = 1,
                     Amount = 30,
                 },
                   new TopUpOptionsEntity
                   {
                       Id = 5,
-                      Name = "50 AED",
+                      Name = "AED 50",
                       Amount = 50,
                       TopUpFee = 1,
                  },
                  new TopUpOptionsEntity
                   {
                       Id = 6,
-                      Name = "75 AED",
+                      Name = "AED 75",
                       Amount = 75,
                       TopUpFee = 1,
                  },
                       new TopUpOptionsEntity
                       {
                       Id = 7,
-                      Name = "100 AED",
+                      Name = "AED 100",
                       Amount = 100,
                       TopUpFee = 1,
                  },
@@ -147,6 +162,7 @@ namespace FinancialManagementDataLayer
                     BeneficiaryBankIban = "AE123456789",
                     BeneficiaryBankAccountCurrency = "AED",
                     UserId = 1,
+                    BeneficiaryNicKName = "John",
                 }
             };
         }

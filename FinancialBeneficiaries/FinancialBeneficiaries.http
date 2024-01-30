@@ -1,13 +1,6 @@
 @FinancialBeneficiaries_HostAddress = http://localhost:5207
 
-GET {{FinancialBeneficiaries_HostAddress}}/weatherforecast/
+GET {{FinancialBeneficiaries_HostAddress}}/GetUserDetails/
 Accept: application/json
-
-###
-POST {{FinancialBeneficiaries_HostAddress}}/test
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 29
-
-field1=value1&field2=value2
 
 ###

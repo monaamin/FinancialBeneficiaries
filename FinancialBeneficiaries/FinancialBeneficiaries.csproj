@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FinancialManagementDataLayer\FinancialManagementDataLayer.csproj" />
+    <ProjectReference Include="..\FinancialManagementServices\FinancialManagementServices.csproj" />
   </ItemGroup>
 
 </Project>
