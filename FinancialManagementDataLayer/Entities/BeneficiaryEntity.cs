@@ -21,6 +21,8 @@ namespace FinancialManagementDataLayer.Entities
 
         public bool IsActive { get; set; }
         public ICollection<TopUpTransactionEntity> TopUpTransactions { get; set; }
+        public UserEntity User { get; set; }
+
 
     }
 }

@@ -13,7 +13,11 @@ namespace FinancialManagementServices
     {
         public AutoMappingGeneric()
         {
-            CreateMap<UserEntity, UserDetails>();
+            CreateMap<BeneficiaryEntity, BeneficiaryDetails>();
+            CreateMap<BeneficiaryDetails, BeneficiaryEntity>();
+            CreateMap<UserEntity, UserDetails>()
+                .ForMember(o=>o.Beneficiaries, b=>b.MapFrom(z=> z.Beneficiaries));
+            CreateMap<UserDetails, UserEntity>();
 
         }
     }

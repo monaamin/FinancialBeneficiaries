@@ -18,6 +18,12 @@ namespace FinancialManagementDataLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<UserEntity>(build =>
+            {
+                build.HasKey(entry => entry.Id);
+                build.Property(entry => entry.Id).ValueGeneratedOnAdd();
+                build.HasMany<BeneficiaryEntity>(s => s.Beneficiaries).WithOne(g => g.User).HasForeignKey(s => s.UserId);
+            });
             modelBuilder.Entity<BeneficiaryEntity>(build =>
             {
                 build.HasKey(entry => entry.BeneficiaryId);
