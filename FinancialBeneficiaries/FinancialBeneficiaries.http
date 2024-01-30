@@ -1,6 +1,0 @@
-@FinancialBeneficiaries_HostAddress = http://localhost:5207
-
-GET {{FinancialBeneficiaries_HostAddress}}/GetUserDetails/
-Accept: application/json
-
-###

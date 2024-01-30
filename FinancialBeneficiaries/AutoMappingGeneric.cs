@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using FinancialManagementDataLayer.Entities;
 using FinancialManagementServices.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinancialManagementServices
 {
@@ -18,7 +13,10 @@ namespace FinancialManagementServices
             CreateMap<UserEntity, UserDetails>()
                 .ForMember(o=>o.Beneficiaries, b=>b.MapFrom(z=> z.Beneficiaries));
             CreateMap<UserDetails, UserEntity>();
-
+            CreateMap<TopUpOptions, TopUpOptionsEntity>();
+            CreateMap<TopUpOptionsEntity, TopUpOptions>();
+            CreateMap<TopUpTransactionEntity, TransactionTopUpInformation>();
+            CreateMap<TransactionTopUpInformation, TopUpTransactionEntity>();
         }
     }
 }

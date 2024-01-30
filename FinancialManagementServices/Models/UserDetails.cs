@@ -1,6 +1,4 @@
-﻿using FinancialManagementDataLayer.Entities;
-
-namespace FinancialManagementServices.Models
+﻿namespace FinancialManagementServices.Models
 {
     public class UserDetails
     {

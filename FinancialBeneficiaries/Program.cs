@@ -1,7 +1,8 @@
+using FinancialBeneficiaries.ExternalServices;
 using FinancialManagementDataLayer;
 using FinancialManagementDataLayer.Repositories;
+using FinancialManagementDataLayer.Repositories.Abstractions;
 using FinancialManagementServices.UserBeneficialServices;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -17,6 +18,14 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddTransient<IUserDetailsManagementService, UserDetailsManagementService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IBeneficiaryManagementService, BeneficiaryManagementService>();
+builder.Services.AddTransient<IBeneficiaryRepository, BeneficiaryRepository>();
+builder.Services.AddTransient<ITopUpOptionsManagementService, TopUpOptionsManagementService>();
+builder.Services.AddTransient<ITopUpOptionsRepository, TopUpOptionsRepository>();
+builder.Services.AddTransient<ITransactionManagementService, TransactionManagementService>();
+builder.Services.AddTransient<ITopUpTransactionRepository, TopUpTransactionRepository>();
+builder.Services.AddTransient<IUserBalanceInformationService, UserBalanceInformationService>();
+builder.Services.AddTransient<ITopUpLimitOptionsRepository, TopUpLimitOptionsRepository>();
 
 
 builder.Services.AddDbContext<FinancialManagementContext>(options =>

@@ -15,9 +15,16 @@ namespace FinancialManagementDataLayer
             }
             var users = GetUsers().ToArray();
             context.Users.AddRange(users);
+            context.SaveChanges();
+
             var beneficiaries = GetBeneficiaries().ToArray();
             context.Beneficiaries.AddRange(beneficiaries);
             context.SaveChanges();
+
+            var transactions = GetTransactions().ToArray();
+            context.TopUpTransactions.AddRange(transactions);
+            context.SaveChanges();
+
             var topUpOptions = GetTopUpOptions().ToArray();
             context.TopUpOptions.AddRange(topUpOptions);
             context.SaveChanges();
@@ -40,6 +47,14 @@ namespace FinancialManagementDataLayer
                     Name = "John",
                     Password = "123456",
                     Email = ""
+                },
+                new UserEntity
+                {
+                    Id = 2,
+                    Name = "John 2",
+                    Password = "123456",
+                    Email = "",
+                    
                 }
             };
         }
@@ -51,14 +66,20 @@ namespace FinancialManagementDataLayer
                 new TopUpLimitsEntity
                 {
                     Id = 1,
-                    TopUpLimit = 500,
+                    TopUpLimit = 1000,
                     TopUpLimitTypeId = 1,
                 },
                 new TopUpLimitsEntity
                 {
                     Id = 2,
-                    TopUpLimit = 1000,
+                    TopUpLimit = 500,
                     TopUpLimitTypeId = 2,
+                },
+                new TopUpLimitsEntity
+                {
+                    Id = 3,
+                    TopUpLimit = 3000,
+                    TopUpLimitTypeId = 3,
                 },
 
             };
@@ -71,21 +92,16 @@ namespace FinancialManagementDataLayer
                 new TopUpLimitTypeEntity
                 {
                     Id = 1,
-                    Name = "Daily Per One Beneficery",
+                    Name = "Monthly Per One Beneficery In case User is not verified",
                 },
                 new TopUpLimitTypeEntity
                 {
                     Id = 2,
-                    Name = "Daily Per All Beneficeries",
-                },
-                new TopUpLimitTypeEntity
-                {
-                    Id = 3,
-                    Name = "Monthly Per One Beneficery",
+                    Name = "Monthly Per One Beneficery In case User is not verified",
                 },
                   new TopUpLimitTypeEntity
                 {
-                    Id = 4,
+                    Id = 3,
                     Name = "Monthly Per All Beneficeries",
                 },
             };
@@ -166,5 +182,26 @@ namespace FinancialManagementDataLayer
                 }
             };
         }
+
+        private static List<TopUpTransactionEntity> GetTransactions()
+        {
+            return new List<TopUpTransactionEntity>
+            {
+                 new TopUpTransactionEntity
+                    {
+                        Id = 1,
+                        Amount = 100,
+                        TopUpOptionId = 1,
+                        UserId = 1,
+                        TransactionDate = DateTime.Now,
+                        TransactionStatus = "Success",
+                        TransactionType = "TopUp",
+                        TransactionRemarks = "TopUp Success",
+                        BeneficiaryId = 1,
+
+                    }
+            };
+        }
+
     }
 }

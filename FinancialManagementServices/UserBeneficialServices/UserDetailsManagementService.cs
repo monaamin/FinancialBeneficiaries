@@ -18,21 +18,20 @@ namespace FinancialManagementServices.UserBeneficialServices
             _logger = logger;
             _mapper = mapper;
         }
-        public Task<UserDetails> GetUserByIdAsync(int userId)
+        public async Task<UserDetails> GetUserByIdAsync(int userId)
         {
-            return Task.Run(async () =>
+
+            try
             {
-                try
-                {
-                    var user = await _userRepository.GetUserById(userId, _cancellationTokenSource.Token);
-                    return _mapper.Map<UserDetails>(user);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error occured while fetching user details");
-                    throw;
-                }
-            });
+                var user = await _userRepository.GetUserById(userId, _cancellationTokenSource.Token);
+                return _mapper.Map<UserDetails>(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occured while fetching user details");
+                throw;
+            }
+
         }
     }
 }
