@@ -89,7 +89,6 @@ namespace FinancialManagementServices.UserBeneficialServices
                 _logger.LogInformation(errorMessage);
                 throw new HttpRequestException(errorMessage, null, System.Net.HttpStatusCode.PreconditionFailed);
             }
-            return null;
         }
         private async Task<UserEntity> UpdateUserBalance(int userId, decimal amount)
         {
