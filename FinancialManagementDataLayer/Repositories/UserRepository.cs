@@ -26,7 +26,7 @@ namespace FinancialManagementDataLayer.Repositories
             return await _context.Users.Include(x => x.Beneficiaries).Include(x=>x.TopUpTransactions).FirstOrDefaultAsync(x => x.Id == userId, cancel);
         }
 
-        public Task<UserEntity> UpdateUser(UserEntity user, CancellationToken cancel)
+        public async Task<UserEntity> UpdateUser(UserEntity user, CancellationToken cancel)
         {
             return Task.FromResult(_context.Users.Update(user).Entity);
         }

@@ -1,9 +1,8 @@
 ﻿using FinancialManagementServices.Models;
-using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FinancialManagementServices.ExternalServices
 {
@@ -11,36 +10,54 @@ namespace FinancialManagementServices.ExternalServices
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<IUserBalanceInformationService> _logger;
-
-        public UserBalanceInformationService(IHttpClientFactory httpClientFactory, ILogger<IUserBalanceInformationService> logger)
+        private readonly IConfiguration Configuration;
+        public UserBalanceInformationService(IHttpClientFactory httpClientFactory, ILogger<IUserBalanceInformationService> logger, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
+            Configuration = configuration;
         }
-        public async  Task<UserBalanceInformation> GetUserBalanceInformationAsync(int userId)
+        public async Task<UserBalanceInformation> GetUserBalanceInformationAsync(int userId)
         {
-            var url = string.Format("https://localhost:32784/UserBalance/GetUserBalance?userId", userId);
+            var client = _httpClientFactory.CreateClient();
+            var baseURL = Configuration["UserBalanceSetting:MainURL"];
+            var url = string.Format(baseURL + "GetUserBalance?userId={0}", userId);
 
-            var httpRequestMessage = new HttpRequestMessage(
-           HttpMethod.Get,
-           url);
-            var httpClient = _httpClientFactory.CreateClient();
-            var httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);
+            HttpRequestMessage request = new HttpRequestMessage();
 
-            if (httpResponseMessage.IsSuccessStatusCode)
+            request.RequestUri = new Uri(url);
+            request.Method = HttpMethod.Get;
+            HttpResponseMessage response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
             {
-                using var contentStream =
-                    await httpResponseMessage.Content.ReadAsStreamAsync();
+                var stringResponse = await response.Content.ReadAsStringAsync();
 
-                UserBalanceInformation userBalanceInformation = await JsonSerializer.DeserializeAsync<UserBalanceInformation>(contentStream);
-                return userBalanceInformation;
+                var result = JsonSerializer.Deserialize<UserBalanceInformation>(stringResponse,
+                    new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+                return result;
             }
             else
             {
-                _logger.LogError("Error while getting user balance information");
-                return null;
-            }
 
+                throw new HttpRequestException(response.ReasonPhrase);
+
+            }
+        }
+
+        public async Task DebitUserBalanceAsync(UserBalanceInformation debitInfo)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var baseURL = Configuration["UserBalanceSetting:MainURL"];
+            var url = string.Format(baseURL + "CreditUserBalance");
+
+            HttpRequestMessage request = new HttpRequestMessage();
+
+            request.RequestUri = new Uri(url);
+
+            var debitInfoDetails = new StringContent(JsonSerializer.Serialize(debitInfo),Encoding.UTF8, Application.Json);
+            using var httpResponseMessage = await client.PostAsync("/api/TodoItems", debitInfoDetails);
+            httpResponseMessage.EnsureSuccessStatusCode();
         }
     }
 }

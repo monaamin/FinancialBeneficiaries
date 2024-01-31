@@ -44,7 +44,7 @@ namespace FinancialManagementServices.UserBeneficialServices
 
             //Get available User Balance
             var userBalance = await _userBalanceInformationService.GetUserBalanceInformationAsync(transactionInformation.UserId);
-            if (userBalance.UserBalance < (topUpOptionsDetails.TopUpFee + topUpOptionsDetails.Amount))
+            if (userBalance.currentBalance < (topUpOptionsDetails.TopUpFee + topUpOptionsDetails.Amount))
             {
                 string errorMessage = "User Balance is less than TopUp Amount";
                 _logger.LogInformation(errorMessage);
