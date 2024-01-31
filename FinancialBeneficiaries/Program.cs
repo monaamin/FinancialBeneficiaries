@@ -1,7 +1,7 @@
-using FinancialBeneficiaries.ExternalServices;
 using FinancialManagementDataLayer;
 using FinancialManagementDataLayer.Repositories;
 using FinancialManagementDataLayer.Repositories.Abstractions;
+using FinancialManagementServices.ExternalServices;
 using FinancialManagementServices.UserBeneficialServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -15,6 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddHttpClient();
 
 builder.Services.AddTransient<IUserDetailsManagementService, UserDetailsManagementService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();

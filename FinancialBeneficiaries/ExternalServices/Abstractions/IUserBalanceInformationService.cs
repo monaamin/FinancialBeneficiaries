@@ -1,6 +1,6 @@
 ﻿using FinancialManagementServices.Models;
 
-namespace FinancialBeneficiaries.ExternalServices
+namespace FinancialManagementServices.ExternalServices
 {
     public interface IUserBalanceInformationService
     {
