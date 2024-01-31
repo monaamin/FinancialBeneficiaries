@@ -52,6 +52,70 @@ namespace FinancialManagementServices.UserBeneficialServices
             }
 
             //Validate TopUp Limit
+            var isValidTransaction = await ValidateTransaction(transactionInformation.UserId, transactionInformation.BeneficiaryId, topUpOptionsDetails.Amount);
+
+            if (isValidTransaction)
+            {
+                try
+                {
+                    //Update User Balance
+                    await UpdateUserBalance(transactionInformation.UserId, topUpOptionsDetails.Amount);
+                    var result = await _topUpTransactionRepository.AddTopUpTransaction(
+                        new TopUpTransactionEntity
+                        {
+                            Amount = topUpOptionsDetails.Amount,
+                            BeneficiaryId = transactionInformation.BeneficiaryId,
+                            TopUpOptionId = transactionInformation.TopUpOptionId,
+                            TransactionDate = DateTime.Now,
+                            UserId = transactionInformation.UserId,
+                            TopUpFee = topUpOptionsDetails.TopUpFee,
+                            TransactionStatus = "Pending",
+                            TransactionType = "TopUp",
+                            TransactionRemarks = "TopUp Transaction"
+
+                        },
+                   _cancellationTokenSource.Token);
+                    var test = _mapper.Map<TransactionTopUpInformation>(result);
+                    return _mapper.Map<TransactionTopUpInformation>(test);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error occured while adding beneficiary");
+                    throw;
+                }
+            }
+            else { 
+                string errorMessage = "TopUp Limit Exceeded";
+                _logger.LogInformation(errorMessage);
+                throw new HttpRequestException(errorMessage, null, System.Net.HttpStatusCode.PreconditionFailed);
+            }
+            return null;
+        }
+        private async Task<UserEntity> UpdateUserBalance(int userId, decimal amount)
+        {
+            var user = await _userRepository.GetUserById(userId, _cancellationTokenSource.Token);
+            user.SessionBalance = user.SessionBalance - amount;
+            //Call and forget till full syncyronization is Done and Balance are updated
+            await _userBalanceInformationService.DebitUserBalanceAsync(new UserBalanceInformation { UserId = userId, currentBalance = amount });
+            return await _userRepository.UpdateUser(user, _cancellationTokenSource.Token);
+
+        }
+        private async Task<bool> ValidateTransaction(int userId, int beneficiaryId, decimal amount)
+        {
+            var user = await _userRepository.GetUserById(userId, _cancellationTokenSource.Token);
+            var topUpTransactionsPerBeneficiray = user.TopUpTransactions.Where(x => x.BeneficiaryId == beneficiaryId);
+            var topUpOptionsDetails = await _topUpOptionsRepository.GetTopUpOptionsById(beneficiaryId, _cancellationTokenSource.Token);
+
+            //Get available User Balance
+            var userBalance = await _userBalanceInformationService.GetUserBalanceInformationAsync(userId);
+            if (userBalance.currentBalance < (topUpOptionsDetails.TopUpFee + topUpOptionsDetails.Amount))
+            {
+                string errorMessage = "User Balance is less than TopUp Amount";
+                _logger.LogInformation(errorMessage);
+                throw new HttpRequestException(errorMessage, null, System.Net.HttpStatusCode.PreconditionFailed);
+            }
+
+            //Validate TopUp Limit
             //Top Up Limit Type Monthly Per one beneficiary in case of user is not verified
             if (!user.IsVerified)
             {
@@ -64,33 +128,7 @@ namespace FinancialManagementServices.UserBeneficialServices
             }
             //Top Up Limit Type Monthly Per All beneficiaries
             await CheckRole(3, user.TopUpTransactions.ToList(), topUpOptionsDetails.Amount);
-
-            try
-            {
-                var result = await _topUpTransactionRepository.AddTopUpTransaction(
-                    new TopUpTransactionEntity
-                    {
-                        Amount = topUpOptionsDetails.Amount,
-                        BeneficiaryId = transactionInformation.BeneficiaryId,
-                        TopUpOptionId = transactionInformation.TopUpOptionId,
-                        TransactionDate = DateTime.Now,
-                        UserId = transactionInformation.UserId,
-                        TopUpFee = topUpOptionsDetails.TopUpFee,
-                        TransactionStatus = "Pending",
-                        TransactionType = "TopUp",
-                        TransactionRemarks = "TopUp Transaction"
-
-                    },
-               _cancellationTokenSource.Token);
-                var test = _mapper.Map<TransactionTopUpInformation>(result);
-                return _mapper.Map<TransactionTopUpInformation>(test);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occured while adding beneficiary");
-                throw;
-            }
-           
+            return true;
         }
         private async Task<bool> CheckRole(int roleNumber, List<TopUpTransactionEntity> transactions, decimal newTopupValue) {
             var topUpLimitOptions = await _topUpLimitOptionsRepository.GetTopUpLimitOptions(_cancellationTokenSource.Token);
