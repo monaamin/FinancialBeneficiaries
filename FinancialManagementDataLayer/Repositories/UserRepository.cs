@@ -1,5 +1,6 @@
 ﻿using FinancialManagementDataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Sockets;
 
 namespace FinancialManagementDataLayer.Repositories
 {
@@ -23,12 +24,14 @@ namespace FinancialManagementDataLayer.Repositories
 
         public async Task<UserEntity> GetUserById(int userId, CancellationToken cancel)
         {
-            return await _context.Users.Include(x => x.Beneficiaries).Include(x=>x.TopUpTransactions).FirstOrDefaultAsync(x => x.Id == userId, cancel);
+            return await _context.Users.Include(x => x.Beneficiaries).Include(x => x.TopUpTransactions).FirstOrDefaultAsync(x => x.Id == userId, cancel);
         }
 
         public async Task<UserEntity> UpdateUser(UserEntity user, CancellationToken cancel)
         {
-            return Task.FromResult(_context.Users.Update(user).Entity);
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync(cancel);
+            return user;
         }
     }
 }

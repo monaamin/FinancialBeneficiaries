@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialBeneficiaries", "F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialManagementDataLayer", "FinancialManagementDataLayer\FinancialManagementDataLayer.csproj", "{86018DD6-1E9F-4959-899A-AB236BEF102B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialBenificariesUT", "FinancialBenificariesUT\FinancialBenificariesUT.csproj", "{07571D7B-68C6-49DF-9BB3-2DC817E43B5A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserBalanceManagementService", "UserBalanceManagementService\UserBalanceManagementService.csproj", "{9D9DB663-B472-4386-8686-061B44A1C02D}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{86018DD6-1E9F-4959-899A-AB236BEF102B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86018DD6-1E9F-4959-899A-AB236BEF102B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86018DD6-1E9F-4959-899A-AB236BEF102B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07571D7B-68C6-49DF-9BB3-2DC817E43B5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07571D7B-68C6-49DF-9BB3-2DC817E43B5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07571D7B-68C6-49DF-9BB3-2DC817E43B5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07571D7B-68C6-49DF-9BB3-2DC817E43B5A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9D9DB663-B472-4386-8686-061B44A1C02D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9D9DB663-B472-4386-8686-061B44A1C02D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D9DB663-B472-4386-8686-061B44A1C02D}.Release|Any CPU.ActiveCfg = Release|Any CPU
